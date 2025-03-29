@@ -23,24 +23,27 @@ const DailyForecast = ({ forecast }: DailyForecastProps) => {
   const previewForecast = forecast.slice(0, 5);
   
   return (
-    <Card className="p-4 bg-white shadow-md rounded-xl mt-6">
-      <div className="flex justify-between items-center mb-4">
+    <Card className="p-5 bg-white shadow-md rounded-xl mt-6">
+      <div className="flex justify-between items-center mb-5">
         <h3 className="text-lg font-semibold text-gray-800">7-Day Forecast</h3>
         <Link 
           to="/forecast" 
-          className="flex items-center text-farm-green text-sm font-medium"
+          className="flex items-center text-farm-green hover:text-farm-green/80 text-sm font-medium transition-colors group"
         >
           View All
-          <ChevronRight size={16} className="ml-1" />
+          <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
       <div className="grid grid-cols-5 gap-3">
         {previewForecast.map((day, index) => (
-          <div key={index} className="flex flex-col items-center">
+          <div 
+            key={index} 
+            className="flex flex-col items-center p-3 rounded-lg transition-all duration-300 hover:bg-gray-50 hover:shadow-sm"
+          >
             <p className="text-sm font-medium mb-1">{day.day}</p>
-            <WeatherIcon type={day.condition} size={32} />
+            <WeatherIcon type={day.condition} size={36} className="my-2" />
             <div className="flex flex-col items-center mt-2">
-              <p className="text-sm font-bold">{day.temperature.high}°</p>
+              <p className="text-sm font-bold text-gray-800">{day.temperature.high}°</p>
               <p className="text-xs text-gray-500">{day.temperature.low}°</p>
             </div>
           </div>

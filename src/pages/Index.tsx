@@ -4,6 +4,7 @@ import CurrentWeather from "@/components/weather/CurrentWeather";
 import DailyForecast from "@/components/weather/DailyForecast";
 import TodayTip from "@/components/weather/TodayTip";
 import WeatherAlert from "@/components/weather/WeatherAlert";
+import { Toaster } from "@/components/ui/toaster";
 
 const Index = () => {
   // Mock data - would come from API in a real app
@@ -64,7 +65,7 @@ const Index = () => {
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto space-y-6">
         <CurrentWeather 
           temperature={currentWeather.temperature}
           condition={currentWeather.condition}
@@ -77,6 +78,7 @@ const Index = () => {
         
         <WeatherAlert count={alertCount} />
       </div>
+      <Toaster />
     </Layout>
   );
 };

@@ -10,16 +10,27 @@ interface WeatherAlertProps {
 
 const WeatherAlert = ({ count }: WeatherAlertProps) => {
   return (
-    <Card className={`p-4 mt-6 rounded-xl ${count > 0 ? 'bg-farm-alert/10' : 'bg-gray-100'}`}>
+    <Card className={`p-5 mt-6 rounded-xl border transition-all duration-300 ${count > 0 
+      ? 'bg-gradient-to-r from-farm-alert/15 to-farm-alert/5 border-farm-alert shadow-md' 
+      : 'bg-gray-100 hover:bg-gray-50'}`}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <div className={`rounded-full p-2 mr-3 ${count > 0 ? 'bg-farm-alert' : 'bg-gray-400'}`}>
-            <AlertTriangle size={20} className="text-white" />
+          <div className={`rounded-full p-2 mr-3 shadow-sm ${count > 0 
+            ? 'bg-farm-alert animate-pulse' 
+            : 'bg-gray-400'}`}
+          >
+            <AlertTriangle size={22} className="text-white" />
           </div>
           <div>
             <h3 className="font-medium text-gray-800">Weather Alerts</h3>
-            <p className={`text-sm ${count > 0 ? 'text-farm-alert' : 'text-gray-500'}`}>
-              {count > 0 ? `${count} active alert${count > 1 ? 's' : ''}` : 'No active alerts'}
+            <p className={`text-sm mt-1 ${count > 0 
+              ? 'text-farm-alert font-medium' 
+              : 'text-gray-500'}`}
+            >
+              {count > 0 
+                ? `${count} active alert${count > 1 ? 's' : ''}` 
+                : 'No active alerts'}
             </p>
           </div>
         </div>
@@ -27,8 +38,11 @@ const WeatherAlert = ({ count }: WeatherAlertProps) => {
           asChild
           variant={count > 0 ? "destructive" : "outline"}
           size="sm"
+          className={count > 0 ? "hover:bg-farm-alert/90" : ""}
         >
-          <Link to="/alerts">View</Link>
+          <Link to="/alerts" className="flex items-center">
+            {count > 0 ? "View Alerts" : "Check Alerts"}
+          </Link>
         </Button>
       </div>
     </Card>
