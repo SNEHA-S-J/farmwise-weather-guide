@@ -4,6 +4,9 @@ import WeatherIcon from "./WeatherIcon";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import VoiceReader from "@/utils/VoiceReader";
 
 interface CurrentWeatherProps {
   temperature: number;
@@ -13,15 +16,34 @@ interface CurrentWeatherProps {
 
 const CurrentWeather = ({ temperature, condition, message }: CurrentWeatherProps) => {
   const { toast } = useToast();
+  const { t, language } = useLanguage();
+  const [isReading, setIsReading] = useState(false);
+  
+  const voiceReader = VoiceReader.getInstance();
 
-  const handleReadAloud = () => {
-    // To be implemented: Text-to-speech functionality
-    console.log("Reading aloud:", `${temperature}°C, ${condition}. ${message}`);
-    toast({
-      title: "Reading Aloud",
-      description: "Reading weather information aloud...",
-      duration: 2000,
-    });
+  const handleReadAloud = async () => {
+    setIsReading(true);
+    
+    const textToRead = `${temperature}°C, ${condition}. ${message}`;
+    
+    try {
+      await voiceReader.speak(textToRead, language);
+      toast({
+        title: t("readAloud"),
+        description: t("readAloudSuccess"),
+        duration: 2000,
+      });
+    } catch (error) {
+      console.error("Error reading aloud:", error);
+      toast({
+        title: "Error",
+        description: "Failed to read aloud",
+        variant: "destructive",
+        duration: 2000,
+      });
+    } finally {
+      setIsReading(false);
+    }
   };
 
   return (
@@ -33,17 +55,18 @@ const CurrentWeather = ({ temperature, condition, message }: CurrentWeatherProps
           <Button
             variant="ghost"
             size="sm"
-            className="flex items-center text-gray-600 hover:text-farm-green transition-all duration-300"
+            className={`flex items-center transition-all duration-300 ${isReading ? "text-farm-green" : "text-gray-600 hover:text-farm-green"}`}
             onClick={handleReadAloud}
-            aria-label="Read aloud"
+            aria-label={t("readAloud")}
+            disabled={isReading}
           >
-            <Volume2 size={20} className="mr-1 animate-pulse-slow" />
-            <span className="text-sm">Read Aloud</span>
+            <Volume2 size={20} className={isReading ? "mr-1 animate-pulse" : "mr-1 animate-pulse-slow"} />
+            <span className="text-sm">{t("readAloud")}</span>
           </Button>
         </div>
 
         <div className="flex flex-col items-center mt-2 transform transition-all duration-300 hover:scale-105">
-          <WeatherIcon type={condition} size={96} />
+          <WeatherIcon type={condition} size={96} aria-label={condition} />
           <h2 className="text-6xl font-bold mt-4 text-gray-800">{temperature}°C</h2>
           <p className="text-gray-600 mt-2 text-center font-medium capitalize">{condition}</p>
           <p className="text-farm-green text-lg mt-6 text-center px-4 border-t pt-4 border-gray-100">{message}</p>
