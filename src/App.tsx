@@ -11,6 +11,9 @@ import Alerts from "./pages/Alerts";
 import Tips from "./pages/Tips";
 import Community from "./pages/Community";
 import NotFound from "./pages/NotFound";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +30,9 @@ const App = () => (
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/tips" element={<Tips />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
