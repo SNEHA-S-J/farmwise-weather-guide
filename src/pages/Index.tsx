@@ -1,4 +1,3 @@
-
 import Layout from "@/components/layout/Layout";
 import CurrentWeather from "@/components/weather/CurrentWeather";
 import DailyForecast from "@/components/weather/DailyForecast";
@@ -157,11 +156,11 @@ const Index = () => {
           <div className="space-y-6">
             <VoiceAssistant />
             
+            <TodayTip tip={todayTip} />
+            
             <CropHealthDiagnosis />
             
             <CustomAlerts />
-            
-            <TodayTip tip={todayTip} />
             
             <WeatherAlert count={alertCount} />
           </div>
