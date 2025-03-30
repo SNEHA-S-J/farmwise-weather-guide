@@ -8,6 +8,7 @@ import { TrendingUp, ChevronUp, ChevronDown, Calendar, AlertTriangle, BarChart2,
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StockAIAdvisor from "@/components/stock/StockAIAdvisor";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 // Mock data for stock prices
 const mockStockData = {
@@ -81,6 +82,13 @@ const Dashboard = () => {
   const priceChange = currentPrice - previousPrice;
   const priceChangePercent = previousPrice > 0 ? (priceChange / previousPrice) * 100 : 0;
   const isPriceUp = priceChange >= 0;
+
+  // Function to handle crop type change
+  const handleCropChange = (crop: string) => {
+    setUserCrop(crop);
+    localStorage.setItem("userCrop", crop);
+    setStockData(mockStockData[crop as keyof typeof mockStockData] || mockStockData.rice);
+  };
 
   return (
     <Layout>
@@ -174,6 +182,7 @@ const Dashboard = () => {
             <TabsTrigger value="overview">{t("overview")}</TabsTrigger>
             <TabsTrigger value="aiAdvisor">{t("aiAdvisor")}</TabsTrigger>
             <TabsTrigger value="marketNews">{t("marketNews")}</TabsTrigger>
+            <TabsTrigger value="cropSelector">{t("cropSelector")}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="overview" className="space-y-4">
@@ -185,12 +194,31 @@ const Dashboard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="pl-2">
-                {/* Placeholder for chart - in real app would use Recharts */}
-                <div className="h-[200px] w-full flex items-center justify-center border-2 border-dashed rounded-lg">
-                  <div className="flex flex-col items-center justify-center space-y-2 text-center">
-                    <BarChart2 className="h-8 w-8 text-muted-foreground" />
-                    <p>{t("stockPriceChart")}</p>
-                  </div>
+                <div className="h-[300px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={stockData}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="price"
+                        stroke="#8884d8"
+                        activeDot={{ r: 8 }}
+                        name={`${userCrop} price`}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
@@ -236,6 +264,32 @@ const Dashboard = () => {
               <CardFooter>
                 <Button variant="outline" className="w-full">{t("viewMore")}</Button>
               </CardFooter>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="cropSelector">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("selectCropToTrack")}</CardTitle>
+                <CardDescription>
+                  {t("changeYourCrop")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {Object.keys(mockStockData).map((crop) => (
+                    <Button 
+                      key={crop}
+                      variant={userCrop === crop ? "default" : "outline"}
+                      className="h-24 flex flex-col items-center justify-center"
+                      onClick={() => handleCropChange(crop)}
+                    >
+                      <Wheat className={`h-6 w-6 ${userCrop === crop ? 'text-white' : 'text-gray-600'} mb-2`} />
+                      <span className="capitalize">{crop}</span>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
