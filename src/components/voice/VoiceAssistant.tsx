@@ -7,6 +7,9 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import VoiceReader from "@/utils/VoiceReader";
 
+// Import the types from our declaration file
+import "@/types/speech-recognition";
+
 const VoiceAssistant = () => {
   const { toast } = useToast();
   const { t, language } = useLanguage();

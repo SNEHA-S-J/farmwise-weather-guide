@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -165,39 +164,41 @@ const CustomAlerts = () => {
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-3 items-center">
               <span className="text-sm font-medium">Alert Type</span>
-              <Select 
-                value={newAlert.type}
-                onValueChange={(value) => setNewAlert({...newAlert, type: value})}
-                className="col-span-2"
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="temperature">Temperature</SelectItem>
-                  <SelectItem value="rainfall">Rainfall</SelectItem>
-                  <SelectItem value="humidity">Humidity</SelectItem>
-                  <SelectItem value="windSpeed">Wind Speed</SelectItem>
-                  <SelectItem value="price">Crop Price</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="col-span-2">
+                <Select 
+                  value={newAlert.type}
+                  onValueChange={(value) => setNewAlert({...newAlert, type: value})}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="temperature">Temperature</SelectItem>
+                    <SelectItem value="rainfall">Rainfall</SelectItem>
+                    <SelectItem value="humidity">Humidity</SelectItem>
+                    <SelectItem value="windSpeed">Wind Speed</SelectItem>
+                    <SelectItem value="price">Crop Price</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             
             <div className="grid grid-cols-3 items-center">
               <span className="text-sm font-medium">Condition</span>
-              <Select 
-                value={newAlert.condition}
-                onValueChange={(value) => setNewAlert({...newAlert, condition: value})}
-                className="col-span-2"
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select condition" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="above">Above</SelectItem>
-                  <SelectItem value="below">Below</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="col-span-2">
+                <Select 
+                  value={newAlert.condition}
+                  onValueChange={(value) => setNewAlert({...newAlert, condition: value})}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select condition" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="above">Above</SelectItem>
+                    <SelectItem value="below">Below</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             
             <div className="grid grid-cols-3 items-center">
