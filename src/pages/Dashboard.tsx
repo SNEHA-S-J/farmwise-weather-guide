@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { TrendingUp, ChevronUp, ChevronDown, Calendar, AlertTriangle, BarChart2, Grain } from "lucide-react";
+import { TrendingUp, ChevronUp, ChevronDown, Calendar, AlertTriangle, BarChart2, Wheat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StockAIAdvisor from "@/components/stock/StockAIAdvisor";
@@ -108,7 +108,7 @@ const Dashboard = () => {
               <CardTitle className="text-sm font-medium">
                 {t("currentPrice")}
               </CardTitle>
-              <Grain className="h-4 w-4 text-muted-foreground" />
+              <Wheat className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">₹{currentPrice}</div>

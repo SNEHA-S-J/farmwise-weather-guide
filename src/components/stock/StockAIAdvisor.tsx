@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bot, RefreshCw, Send, Mic, VolumeUp } from "lucide-react";
+import { Bot, RefreshCw, Send, Mic, Volume2 } from "lucide-react";
 import VoiceReader from "@/utils/VoiceReader";
 
 interface StockAIAdvisorProps {
@@ -13,7 +12,6 @@ interface StockAIAdvisorProps {
   priceChange: number;
 }
 
-// Mock AI responses based on crop and market conditions
 const getAIResponse = (crop: string, currentPrice: number, priceChange: number): string => {
   if (priceChange > 5) {
     return `The market for ${crop} is showing a strong upward trend (${priceChange.toFixed(1)}%). This is a favorable time to consider selling a portion of your stock. Current price of ₹${currentPrice} per quintal is above the seasonal average. Consider selling in batches over the next week to maximize profits.`;
@@ -26,7 +24,6 @@ const getAIResponse = (crop: string, currentPrice: number, priceChange: number):
   }
 };
 
-// Predefined questions for farmers to ask the AI
 const suggestedQuestions = [
   "When is the best time to sell my crop?",
   "Should I store my harvest or sell now?",
@@ -47,17 +44,13 @@ const StockAIAdvisor = ({ crop, currentPrice, priceChange }: StockAIAdvisorProps
   const handleSendQuestion = () => {
     if (!question.trim()) return;
     
-    // Add user question to conversation
     setConversation(prev => [...prev, { type: "user", message: question }]);
     
-    // Simulate AI thinking
     setIsThinking(true);
     
-    // Mock AI response after a delay
     setTimeout(() => {
       let response = "";
       
-      // Generate contextual response based on question keywords
       if (question.toLowerCase().includes("sell") || question.toLowerCase().includes("price")) {
         response = getAIResponse(crop, currentPrice, priceChange + Math.random() * 2 - 1);
       } else if (question.toLowerCase().includes("store") || question.toLowerCase().includes("keep")) {
@@ -72,7 +65,6 @@ const StockAIAdvisor = ({ crop, currentPrice, priceChange }: StockAIAdvisorProps
         response = `Thank you for your question about ${crop}. Based on the current market price of ₹${currentPrice} and recent trends (${priceChange > 0 ? '+' : ''}${priceChange.toFixed(1)}%), I'd recommend watching the market for another week before making major decisions.`;
       }
       
-      // Add AI response to conversation
       setConversation(prev => [...prev, { type: "ai", message: response }]);
       setIsThinking(false);
       setQuestion("");
@@ -89,7 +81,6 @@ const StockAIAdvisor = ({ crop, currentPrice, priceChange }: StockAIAdvisorProps
   };
 
   const handleVoiceInput = () => {
-    // Mock voice input functionality
     setQuestion("When should I sell my crop?");
     setTimeout(() => handleSendQuestion(), 500);
   };
@@ -129,7 +120,7 @@ const StockAIAdvisor = ({ crop, currentPrice, priceChange }: StockAIAdvisorProps
                       className="mt-1 h-6 p-0 text-gray-500 hover:text-gray-700"
                       onClick={() => readMessage(entry.message)}
                     >
-                      <VolumeUp size={16} />
+                      <Volume2 size={16} />
                     </Button>
                   )}
                 </div>
