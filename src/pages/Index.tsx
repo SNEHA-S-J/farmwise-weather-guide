@@ -10,6 +10,10 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sprout } from "lucide-react";
 import { useState } from "react";
+import CropHealthDiagnosis from "@/components/crop/CropHealthDiagnosis";
+import CustomAlerts from "@/components/weather/CustomAlerts";
+import VoiceAssistant from "@/components/voice/VoiceAssistant";
+import FarmerEducationHub from "@/components/education/FarmerEducationHub";
 
 const Index = () => {
   const { t } = useLanguage();
@@ -95,61 +99,75 @@ const Index = () => {
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto space-y-6">
-        <CurrentWeather 
-          temperature={currentWeather.temperature}
-          condition={currentWeather.condition}
-          message={currentWeather.message}
-        />
-        
-        <Card className="p-5 bg-white shadow-md rounded-xl">
-          <div className="flex items-center mb-4">
-            <div className="bg-farm-green p-2 rounded-full mr-3">
-              <Sprout className="text-white" size={20} />
-            </div>
-            <h2 className="font-bold text-lg">Current Crop Conditions</h2>
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6">
+            <CurrentWeather 
+              temperature={currentWeather.temperature}
+              condition={currentWeather.condition}
+              message={currentWeather.message}
+            />
+            
+            <Card className="p-5 bg-white shadow-md rounded-xl">
+              <div className="flex items-center mb-4">
+                <div className="bg-farm-green p-2 rounded-full mr-3">
+                  <Sprout className="text-white" size={20} />
+                </div>
+                <h2 className="font-bold text-lg">Current Crop Conditions</h2>
+              </div>
+              
+              <Tabs defaultValue="corn" onValueChange={setSelectedCrop} value={selectedCrop}>
+                <TabsList className="grid grid-cols-3 mb-4">
+                  <TabsTrigger value="corn">{t("corn")}</TabsTrigger>
+                  <TabsTrigger value="wheat">{t("wheat")}</TabsTrigger>
+                  <TabsTrigger value="rice">{t("rice")}</TabsTrigger>
+                </TabsList>
+                
+                {Object.entries(cropInfo).map(([crop, info]) => (
+                  <TabsContent key={crop} value={crop} className="space-y-4">
+                    <div className="overflow-hidden rounded-md">
+                      <img 
+                        src={info.image} 
+                        alt={crop} 
+                        className="w-full h-40 object-cover transition-transform hover:scale-105 duration-500"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <p className="text-gray-700">{info.currentStatus}</p>
+                      <div className="grid grid-cols-2 gap-2 text-sm">
+                        <div className="bg-blue-50 p-2 rounded">
+                          <span className="font-semibold">Water: </span>
+                          {info.wateringNeeds}
+                        </div>
+                        <div className="bg-yellow-50 p-2 rounded">
+                          <span className="font-semibold">Ideal temp: </span>
+                          {info.idealTemp}
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                ))}
+              </Tabs>
+            </Card>
+            
+            <DailyForecast forecast={forecastData} />
           </div>
           
-          <Tabs defaultValue="corn" onValueChange={setSelectedCrop} value={selectedCrop}>
-            <TabsList className="grid grid-cols-3 mb-4">
-              <TabsTrigger value="corn">{t("corn")}</TabsTrigger>
-              <TabsTrigger value="wheat">{t("wheat")}</TabsTrigger>
-              <TabsTrigger value="rice">{t("rice")}</TabsTrigger>
-            </TabsList>
+          <div className="space-y-6">
+            <VoiceAssistant />
             
-            {Object.entries(cropInfo).map(([crop, info]) => (
-              <TabsContent key={crop} value={crop} className="space-y-4">
-                <div className="overflow-hidden rounded-md">
-                  <img 
-                    src={info.image} 
-                    alt={crop} 
-                    className="w-full h-40 object-cover transition-transform hover:scale-105 duration-500"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <p className="text-gray-700">{info.currentStatus}</p>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div className="bg-blue-50 p-2 rounded">
-                      <span className="font-semibold">Water: </span>
-                      {info.wateringNeeds}
-                    </div>
-                    <div className="bg-yellow-50 p-2 rounded">
-                      <span className="font-semibold">Ideal temp: </span>
-                      {info.idealTemp}
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </Card>
+            <CropHealthDiagnosis />
+            
+            <CustomAlerts />
+            
+            <TodayTip tip={todayTip} />
+            
+            <WeatherAlert count={alertCount} />
+          </div>
+        </div>
         
-        <DailyForecast forecast={forecastData} />
-        
-        <TodayTip tip={todayTip} />
-        
-        <WeatherAlert count={alertCount} />
+        <FarmerEducationHub />
       </div>
       <Toaster />
     </Layout>
